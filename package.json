@@ -1,7 +1,7 @@
 {
   "name": "not-sync",
   "version": "1.0.0",
-  "description": "Disable file synchronization for selceted files in an auto detected cloud storage such as Dropbox, iCloudDrive or OneDrive.",
+  "description": "Disable file synchronization for files in an auto detected cloud storage such as Dropbox, iCloudDrive or OneDrive.",
   "author": {
     "name": "Özüm Eldoğan",
     "email": "ozum@ozum.net",
