@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable no-return-assign */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types, no-return-assign */
 import { homedir, tmpdir } from "os";
 import { join, sep } from "path";
 import { promises as fs } from "fs";
 import { symlink, create, load, Tree } from "fs-structure";
 import mapToObject from "array-map-to-object";
-import { ServiceKey, Options, disable, enable, Events } from "../../src/index";
+import { ServiceKey, Options, notSync, resync, Events } from "../../src/index";
 
 const EVENT_NAMES: Array<keyof Events> = ["found", "notFound", "move", "moveFail", "symlink", "delete", "deleteEntry", "addEntry"];
 
@@ -65,13 +64,13 @@ export async function generateAndTest(
   const beforeDisableFiles = await load(projectPath);
 
   // Disable files in cloud service and record filesystem.
-  await disable(testOptions.paths, { cwd: projectPath, ...options });
+  await notSync(testOptions.paths, { cwd: projectPath, ...options });
   const afterDisableFiles = await load(projectPath);
   const afterDisableTargetFiles = service === "iCloudDrive" && options.linkSameDir ? {} : await load(targetPath);
 
   // Enable files in cloud service and record filesystem.
   if (testOptions.enable) {
-    await enable(testOptions.paths, { cwd: projectPath, ...options });
+    await resync(testOptions.paths, { cwd: projectPath, ...options });
     afterEnableFiles = await load(projectPath);
     expect(beforeDisableFiles).toEqual(afterEnableFiles);
   }

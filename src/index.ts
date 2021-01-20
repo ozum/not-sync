@@ -1,6 +1,6 @@
 import type { ServiceKey } from "./cloud-service/cloud-service";
 
-export { enable, disable } from "./main";
+export { resync, notSync } from "./main";
 
 export type { ServiceKey } from "./cloud-service/cloud-service";
 export type MoveErrorCode = "NOSRC" | "LINKEXIST" | "NOTALINK" | "NOTFOUND" | "NOTARGET";
@@ -24,13 +24,22 @@ export interface Events {
   deleteEntry?: OnDeleteEntry;
 }
 
+/** Options */
 export interface Options {
+  /** Current working directory to be used for resolving relative paths. */
   cwd?: string;
+  /** Ignore configuration files (e.g. .gitignore, .prettierignore) to add new created files if any. */
   ignoreConfigs?: string | string[];
+  /** Prevents changes to be written to disk. Executes a dry run. */
   dry?: boolean;
+  /** Event handler functions to act on several events generated during operation. */
   on?: Events;
+  /** Adds extra information to event handlers. */
   verbose?: boolean;
-  roots?: Partial<Record<ServiceKey, string>>;
-  targetRoots?: Partial<Record<ServiceKey, string>>;
+  /** Move files near original one for iCloudDrive. For example "node_modules" is moved "node_modules.nosync" in same directory. */
   linkSameDir?: boolean;
+  /** Custom roots for each cloud service to move files. */
+  targetRoots?: Partial<Record<ServiceKey, string>>;
+  /** Roots of cloud services. If default roots has to be changed for same reson. */
+  roots?: Partial<Record<ServiceKey, string>>;
 }

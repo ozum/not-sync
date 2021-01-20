@@ -1,7 +1,7 @@
 {
   "name": "not-sync",
   "version": "1.0.0",
-  "description": "Disable file synchronization for files in an auto detected cloud storage such as Dropbox, iCloudDrive or OneDrive.",
+  "description": "Disable synchronization for some files in cloud storage such as Dropbox, iCloudDrive or OneDrive. Detects cloud storage provider.",
   "author": {
     "name": "Özüm Eldoğan",
     "email": "ozum@ozum.net",
@@ -30,6 +30,10 @@
     "module-files",
     "@types"
   ],
+  "bin": {
+    "not-sync": "./dist/bin/not-sync.js",
+    "resync": "./dist/bin/resync.js"
+  },
   "homepage": "https://github.com/ozum/not-sync",
   "bugs": "https://github.com/ozum/not-sync/issues",
   "repository": "ozum/not-sync",
@@ -49,13 +53,15 @@
     "postinstall": "is-ci || husky install",
     "postpublish": "pinst --enable",
     "prepublishOnly": "pinst --disable",
-    "yo:update": "yo tsmod:uninstall --no-install --force && yo 'tsmod' --no-coverage"
+    "yo:update": "yo tsmod:uninstall --no-install --force && yo 'tsmod' '--no-coverage' '--typedoc'"
   },
   "dependencies": {
     "array-map-to-object": "0.0.4",
-    "delete-empty-up": "^1.2.0",
+    "delete-empty-up": "^1.2.2",
     "find-up": "^5.0.0",
     "junk": "^3.1.0",
+    "meow": "^9.0.0",
+    "meow-helper": "^1.4.3",
     "tslib": "^2.1.0"
   },
   "devDependencies": {
@@ -63,14 +69,14 @@
     "@commitlint/config-conventional": "^11.0.0",
     "@types/jest": "^26.0.20",
     "@types/lodash.isplainobject": "^4.0.6",
-    "@types/node": "^14.14.21",
-    "@typescript-eslint/eslint-plugin": "^4.13.0",
-    "@typescript-eslint/parser": "^4.13.0",
+    "@types/node": "^14.14.22",
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
     "commitizen": "^4.2.3",
     "concat-md": "^0.3.5",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-config-prettier": "^7.1.0",
+    "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^24.1.3",
     "eslint-plugin-prettier": "^3.3.1",
@@ -85,10 +91,10 @@
     "ts-jest": "^26.2.0",
     "ts-node-dev": "^1.1.1",
     "type-fest": "^0.20.2",
-    "typedoc": "^0.20.14",
-    "typedoc-neo-theme": "^1.0.10",
+    "typedoc": "^0.20.16",
+    "typedoc-neo-theme": "^1.1.0",
     "typedoc-plugin-example-tag": "^1.0.2",
-    "typedoc-plugin-markdown": "^3.4.0",
+    "typedoc-plugin-markdown": "^3.4.1",
     "typescript": "^4.1.3"
   }
 }

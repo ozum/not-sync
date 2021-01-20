@@ -181,7 +181,7 @@ export default abstract class CloudService {
    *
    * @param path is the path to file/directory to disable sync.
    */
-  public async disable(paths: string[]): Promise<void> {
+  public async notSync(paths: string[]): Promise<void> {
     const cloudPaths = this.filterCloudPaths(paths);
     if (cloudPaths.length === 0) return;
     if (this.on?.found) await this.on.found(this.Class.serviceKey, cloudPaths);
@@ -200,7 +200,7 @@ export default abstract class CloudService {
    *
    * @param path is the path to directory to enable sync.
    */
-  public async enable(paths: string[]): Promise<void> {
+  public async resync(paths: string[]): Promise<void> {
     const cloudPaths = this.filterCloudPaths(paths);
 
     if (cloudPaths.length === 0) return;

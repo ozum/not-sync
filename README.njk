@@ -1,36 +1,52 @@
 # not-sync
 
-Disable file synchronization for files in an auto detected cloud storage such as Dropbox, iCloudDrive or OneDrive.
+Disable synchronization for some files in cloud storage such as Dropbox, iCloudDrive or OneDrive. Detects cloud storage provider.
 
 # Synopsis
 
+## CLI
+
+Disable synchronization for `node_modules`, `dist`, `coverage`.
+
+```sh
+$ not-sync node_modules dist coverage
+```
+
+Re-enable synchronization for `node_modules`, `dist`, `coverage`.
+
+```sh
+$ resync node_modules dist coverage
+```
+
+## API
+
 ```ts
-import { enable, disable } from "not-sync";
+import { notSync, resync } from "not-sync";
 ```
 
 ```ts
 // Disable synchronization for following directories.
-await disable(["node_modules", "coverage", "dist"]);
+await notSync(["node_modules", "coverage", "dist"]);
 ```
 
 ```ts
 // Provide cwd for a project located in `${os.homedir()}/Dropbox/project`.
-await disable(["node_modules", "coverage", "dist"], { cwd: `${os.homedir()}/Dropbox/project` });
+await notSync(["node_modules", "coverage", "dist"], { cwd: `${os.homedir()}/Dropbox/project` });
 ```
 
 ```ts
 // If new new files are added to project directory (e.g. iCloudDrive .nosync files) add new files
 // to closest ".gitignore". (Here "node_modules.nosync", "coverage.nosync", "dist.nosync")
-await disable(["node_modules", "coverage", "dist"], { ignoreConfigs: [".gitignore"] });
+await notSync(["node_modules", "coverage", "dist"], { ignoreConfigs: [".gitignore"] });
 ```
 
 ```ts
 // Enable synchronization for following directories.
-await enable(["node_modules", "coverage", "dist"]);
+await resync(["node_modules", "coverage", "dist"]);
 ```
 
 ```ts
-await disable(["node_modules", "coverage", "dist"], {
+await notSync(["node_modules", "coverage", "dist"], {
   cwd: "path/to/cwd",
   ignoreConfigs: [".gitignore", ".prettierignore"],
   dry: false;
@@ -65,12 +81,12 @@ await disable(["node_modules", "coverage", "dist"], {
 
 This module disables and enables synchronization of given files and directories from cloud storage. Possibly could be used to save space, time and sometimes prevent headache, especially for heavy by size and number of files directories such as `node_modules`.
 
-`disable` function moves files/directories to another non-synchronized path (see table below) and creates a symbolic link in place of original files. `enable` function deletes symbolic links and moves files back to original place.
+`notSync` function moves files/directories to another non-synchronized path (see table below) and creates a symbolic link in place of original files. `resync` function deletes symbolic links and moves files back to original place.
 
 # Features
 
 - Could be used more than one cloud storage services.
-- Provides `enable` method for undoing changes.
+- Provides `resync` method for undoing changes.
 - Auto detect cloud storage service from file path.
 - Could use `.nosync` extension for `iCloudDrive`.
 
@@ -89,6 +105,59 @@ Target directory can be changed using `targetRoots` option.
 <!-- usage -->
 
 <!-- commands -->
+
+# CLI
+
+## not-sync
+
+```sh
+       USAGE
+
+  $ not-sync [options] <path>...
+
+     ARGUMENTS
+
+  <path>... Path or list of paths (separate with space) to disable syncronization for.
+
+      OPTIONS
+
+     --cwd                           Set current working directory for relative paths.
+  -i --ignoreConfigs                 (CSV) List of ignore files to update (e.g. .gitignore, .prettierignore).
+     --dry                           Prevent changes to be written to disk. Executes a dry run.
+  -v --verbose                       Output extra information.
+  -l --linkSameDir   (Default: true) Move files near original file for iCloudDrive. For example 'dist' is moved 'dist.nosync' in same directory.
+     --help                          Show help.
+     --version                       Show version.
+
+      EXAMPLES
+
+  $ not-sync --i .gitignore node_modules dist coverage
+```
+
+## resync
+
+```sh
+       USAGE
+
+  $ resync [options] <path>...
+
+     ARGUMENTS
+
+  <path>... Path or list of paths (separate with space) to re-enable syncronization for.
+
+      OPTIONS
+
+     --cwd            Set current working directory for relative paths.
+  -i --ignoreConfigs  (CSV) List of ignore files to update (e.g. .gitignore, .prettierignore).
+     --dry            Prevent changes to be written to disk. Executes a dry run.
+  -v --verbose        Output extra information.
+     --help           Show help.
+     --version        Show version.
+
+      EXAMPLES
+
+  $ resync --i .gitignore node_modules dist coverage
+```
 
 # API
 

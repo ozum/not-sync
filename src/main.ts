@@ -7,7 +7,8 @@ import type { Options } from "./index";
 
 const ServiceProviders = [ICloudDrive, DropBox, OneDrive];
 
-async function switchTo(method: "enable" | "disable", paths: string[], userOptions: Options): Promise<void> {
+async function callMethod(method: "notSync" | "resync", paths: string[], userOptions: Options): Promise<void> {
+  if (!paths) throw new Error("Paths are required.");
   const options = { linkSameDir: true, ...userOptions, cwd: getCWD(userOptions.cwd) };
   let nonCloudPaths = paths;
 
@@ -23,10 +24,10 @@ async function switchTo(method: "enable" | "disable", paths: string[], userOptio
   if (nonCloudPaths.length > 0 && options?.on?.notFound) options.on.notFound(nonCloudPaths);
 }
 
-export async function enable(paths: string[], options: Options = {}): Promise<void> {
-  return switchTo("enable", paths, options);
+export async function resync(paths: string[], options: Options = {}): Promise<void> {
+  return callMethod("resync", paths, options);
 }
 
-export async function disable(paths: string[], options: Options = {}): Promise<void> {
-  return switchTo("disable", paths, options);
+export async function notSync(paths: string[], options: Options = {}): Promise<void> {
+  return callMethod("notSync", paths, options);
 }
