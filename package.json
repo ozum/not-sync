@@ -1,7 +1,7 @@
 {
   "name": "not-sync",
   "version": "1.0.0",
-  "description": "Disable synchronization for some files in cloud storage such as Dropbox, iCloudDrive or OneDrive. Detects cloud storage provider.",
+  "description": "Disable synchronization for files in cloud storage such as Dropbox, iCloudDrive or OneDrive. Detects cloud storage provider.",
   "author": {
     "name": "Özüm Eldoğan",
     "email": "ozum@ozum.net",
@@ -30,10 +30,6 @@
     "module-files",
     "@types"
   ],
-  "bin": {
-    "not-sync": "./dist/bin/not-sync.js",
-    "resync": "./dist/bin/resync.js"
-  },
   "homepage": "https://github.com/ozum/not-sync",
   "bugs": "https://github.com/ozum/not-sync/issues",
   "repository": "ozum/not-sync",
@@ -57,11 +53,9 @@
   },
   "dependencies": {
     "array-map-to-object": "0.0.4",
-    "delete-empty-up": "^1.2.2",
     "find-up": "^5.0.0",
     "junk": "^3.1.0",
-    "meow": "^9.0.0",
-    "meow-helper": "^1.4.3",
+    "rm-up": "^1.0.0",
     "tslib": "^2.1.0"
   },
   "devDependencies": {

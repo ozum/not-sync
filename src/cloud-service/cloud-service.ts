@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { homedir } from "os";
 import { basename, join, resolve, relative } from "path";
-import deleteEmptyUp from "delete-empty-up";
+import rmUp from "rm-up";
 import { deleteIgnoreEntries, addIgnoreEntries } from "../utils/ignore-file";
 import { elstat, getLinkTarget, symlink, unlink, move } from "../utils/fs";
 import SyncError from "../utils/error";
@@ -161,7 +161,7 @@ export default abstract class CloudService {
       await unlink(originalAbsolutePath, originalPath, this.fsOptions);
       await move(linkedAbsolutePath, originalAbsolutePath, this.fsOptions);
       const deleteOptions = { cwd: this.cwd, dry: this.dry, force: true, deleteInitial: true, stop: this.targetRoot };
-      const deleted = await deleteEmptyUp(linkedAbsolutePath, deleteOptions);
+      const deleted = await rmUp(linkedAbsolutePath, deleteOptions);
       if (this.on?.delete && deleted.length > 0) {
         if (this.verbose) deleted.forEach((path) => (this.on.delete as OnDelete)(this.Class.serviceKey, path, "parent"));
         else this.on.delete(this.Class.serviceKey, deleted[deleted.length - 1], "parent");
