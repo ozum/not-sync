@@ -42,4 +42,6 @@ export interface Options {
   targetRoots?: Partial<Record<ServiceKey, string>>;
   /** Roots of cloud services. If default roots has to be changed for same reson. */
   roots?: Partial<Record<ServiceKey, string>>;
+  /** Create directories for non existing paths. (If they are in a cloud path). This may be used to disable sync of directories to be created in future. */
+  createDirs?: boolean;
 }

@@ -13,11 +13,12 @@ async function callMethod(method: "notSync" | "resync", paths: string[], userOpt
   let nonCloudPaths = paths;
 
   await Promise.all(
-    ServiceProviders.map((ServiceProvider) => {
+    ServiceProviders.map(async (ServiceProvider) => {
       const [root, targetRoot] = [options.roots?.[ServiceProvider.serviceKey], options.targetRoots?.[ServiceProvider.serviceKey]];
       const service = new ServiceProvider({ ...options, root, targetRoot });
-      nonCloudPaths = difference(nonCloudPaths, service.filterCloudPaths(paths));
-      return service[method](paths);
+      const servicePaths = service.filterCloudPaths(paths);
+      nonCloudPaths = difference(nonCloudPaths, servicePaths);
+      return service[method](servicePaths);
     })
   );
 

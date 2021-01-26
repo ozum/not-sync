@@ -21,6 +21,13 @@ function convertSymlinks(tree: Tree, targetPath: string): Tree {
   return result;
 }
 
+/**
+ * Generates file structure and tests given service for the structure.
+ *
+ * @param service is the service name.
+ * @param serviceOptions is the service options.
+ * @param testOptions is the test options.
+ */
 export async function generateAndTest(
   service: ServiceKey,
   serviceOptions: Options,
@@ -61,17 +68,17 @@ export async function generateAndTest(
   const options = { roots: { [service]: root }, targetRoots: { [service]: targetRoot }, on, linkSameDir: true, ...serviceOptions };
 
   // Record file system before operation.
-  const beforeDisableFiles = await load(projectPath);
+  const beforeDisableFiles = await load(projectPath, { includeDirs: true });
 
   // Disable files in cloud service and record filesystem.
   await notSync(testOptions.paths, { cwd: projectPath, ...options });
-  const afterDisableFiles = await load(projectPath);
-  const afterDisableTargetFiles = service === "iCloudDrive" && options.linkSameDir ? {} : await load(targetPath);
+  const afterDisableFiles = await load(projectPath, { includeDirs: true });
+  const afterDisableTargetFiles = service === "iCloudDrive" && options.linkSameDir ? {} : await load(targetPath, { includeDirs: true });
 
   // Enable files in cloud service and record filesystem.
   if (testOptions.enable) {
     await resync(testOptions.paths, { cwd: projectPath, ...options });
-    afterEnableFiles = await load(projectPath);
+    afterEnableFiles = await load(projectPath, { includeDirs: true });
     expect(beforeDisableFiles).toEqual(afterEnableFiles);
   }
 

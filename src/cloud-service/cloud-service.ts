@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { homedir } from "os";
+import { promises as fs } from "fs";
 import { basename, join, resolve, relative } from "path";
 import rmUp from "rm-up";
 import { deleteIgnoreEntries, addIgnoreEntries } from "../utils/ignore-file";
@@ -7,19 +8,15 @@ import { elstat, getLinkTarget, symlink, unlink, move } from "../utils/fs";
 import SyncError from "../utils/error";
 import { arrify } from "../utils/helper";
 import { getLinkPaths, contains } from "../utils/path";
-import type { Events, MoveErrorCode, OnDelete } from "../index";
+import type { Events, MoveErrorCode, OnDelete, Options } from "../index";
 import type { FsOptions } from "../utils/fs";
 
-export interface Options {
+export type ServiceOptions = Omit<Options, "cwd" | "linkSameDir" | "targetRoots" | "roots"> & {
   cwd: string;
-  ignoreConfigs?: string | string[];
-  dry?: boolean;
-  on?: Events;
-  verbose?: boolean;
   root?: string;
   targetRoot?: string;
   suffix?: string;
-}
+};
 
 export type ServiceKey = "iCloudDrive" | "dropbox" | "oneDrive";
 
@@ -34,8 +31,9 @@ export default abstract class CloudService {
   protected readonly suffix?: string;
   protected readonly on: Events;
   protected readonly verbose?: boolean;
+  protected readonly createDirs?: boolean;
 
-  public constructor(options: Options) {
+  public constructor(options: ServiceOptions) {
     this.root = options.root ?? this.Class.defaultRoot;
     if (this.Class.defaultRoot === undefined) throw new SyncError("NOROOT");
     this.cloudDirs = [this.root, ...this.calculateCloudDirs()];
@@ -46,6 +44,7 @@ export default abstract class CloudService {
     this.suffix = options.suffix;
     this.on = options.on ?? {};
     this.verbose = options.verbose;
+    this.createDirs = options.createDirs;
   }
 
   protected calculateCloudDirs(): string[] {
@@ -98,7 +97,6 @@ export default abstract class CloudService {
    * Checks whether given path is under any level in cloud directory.
    *
    * @param path is the path to check.
-   * @param cwd is current working directory.
    * @returns whether given path is under any level in cloud directory
    */
   public isCloudPath(path: string): boolean {
@@ -109,7 +107,6 @@ export default abstract class CloudService {
    * Filters cloud paths among given paths.
    *
    * @param paths ar the paths to filter.
-   * @param cwd is the current working directory.
    * @returns paths belonging cloud service.
    */
   public filterCloudPaths(paths: string[]): string[] {
@@ -123,12 +120,12 @@ export default abstract class CloudService {
    *
    * @param from is the old path to move from.
    * @param to is the new path to move to.
-   * @param cwd is the base path if other paths are relative.
    * @returns absolute path of source file if moved and linked successfully, `undefined` otherwise.
    * @throws `NOTCOMP` if old and new path exists, but original file is not a sybolic link.
    */
   private async moveAndLink(from: string, to: string): Promise<string | undefined> {
     const { fromAbsolutePath, toAbsolutePath, linkPath } = getLinkPaths(from, to, { cwd: this.cwd });
+    if (this.createDirs) await fs.mkdir(fromAbsolutePath, { recursive: true });
     const [fromStats, toStats] = await Promise.all([elstat(fromAbsolutePath), elstat(toAbsolutePath)]);
 
     if (fromStats && toStats && !fromStats.isSymbolicLink()) throw new SyncError("NOTCOMP", from);
@@ -150,7 +147,6 @@ export default abstract class CloudService {
    * Deletes symbolic link at `newPath` and  moves file from `oldPath` to `newPath`.
    *
    * @param originalPath is the old path to move from.
-   * @param cwd is the base path if other paths are relative.
    * @returns absolute path of target of link if file is moved successfully, `undefined` otherwise.
    */
   private async moveToOriginal(originalPath: string): Promise<string | undefined> {

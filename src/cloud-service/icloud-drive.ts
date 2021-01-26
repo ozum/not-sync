@@ -3,9 +3,9 @@ import { homedir, platform } from "os";
 import { join } from "path";
 import { elstatSync } from "../utils/fs";
 import CloudService from "./cloud-service";
-import type { Options } from "./cloud-service";
+import type { ServiceOptions } from "./cloud-service";
 
-interface ICloudOptions extends Options {
+interface ICloudOptions extends ServiceOptions {
   linkSameDir?: boolean;
 }
 
