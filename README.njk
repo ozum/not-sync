@@ -61,6 +61,14 @@ await notSync(["node_modules", "coverage", "dist"], {
 })
 ```
 
+## Minimal CLI
+
+For more advanced options, please use [not-sync-cli](https://www.npmjs.com/package/not-sync-cli)
+
+```sh
+$ not-sync node_modules,dist,coverage
+```
+
 # Details
 
 This module disables and enables synchronization of given files and directories from cloud storage. Possibly could be used to save space, time and sometimes prevent headache, especially for heavy by size and number of files directories such as `node_modules`.
@@ -73,6 +81,7 @@ This module disables and enables synchronization of given files and directories 
 - Provides `resync` method for undoing changes.
 - Auto detect cloud storage service from file path.
 - Could use `.nosync` extension for `iCloudDrive`.
+- Minimal CLI. For more advanced options, please use [not-sync-cli](https://www.npmjs.com/package/not-sync-cli)
 
 Below are examples for `node_modules` directory located in a `project`:
 
@@ -92,3 +101,7 @@ Target directory can be changed using `targetRoots` option.
 # API
 
 {% include "api.md" %}
+
+# Related
+
+[not-sync-cli](https://www.npmjs.com/package/not-sync-cli): CLI for this API.
