@@ -15,9 +15,9 @@
 import { notSync, ServiceKey } from "../index";
 
 const args = process.argv.slice(2);
-const paths = args[0].split(",");
+const paths = (args[0] || "").split(",");
 
 const symlink = (service: ServiceKey, target: string, path: string): void =>
   console.log(`[not-sync] [${service}] "${path}" is moved to "${target}" and added a symbolic link.`);
 
-if (paths) notSync(paths, { createDirs: true, on: { symlink } });
+if (paths.length > 0) notSync(paths, { createDirs: true, on: { symlink } });
