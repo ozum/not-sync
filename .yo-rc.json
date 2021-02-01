@@ -26,7 +26,6 @@
           "scripts.lint": "eslint --ignore-path .gitignore --cache --max-warnings 0 --ext js,jsx,ts,tsx,vue --fix .",
           "scripts.postinstall": "is-ci || husky install",
           "scripts.postpublish": "pinst --enable",
-          "scripts.preinstall": "npx not-sync node_modules",
           "scripts.prepublishOnly": "pinst --disable",
           "scripts.readme": "node module-files/scripts/tsmod.js readme",
           "scripts.release": "npm run readme && git pull && git add -A && git commit && git push --follow-tags",

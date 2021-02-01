@@ -1,6 +1,6 @@
 {
   "name": "not-sync",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Disable synchronization for files in cloud storage such as Dropbox, iCloudDrive or OneDrive. Detects cloud storage provider.",
   "author": {
     "name": "Özüm Eldoğan",
@@ -44,7 +44,7 @@
     "test": "jest",
     "readme": "node module-files/scripts/tsmod.js readme",
     "build": "not-sync dist && tsc --incremental",
-    "preinstall": "npx not-sync node_modules",
+    "preinstall": "npx ts-node src/bin/not-sync node_modules",
     "postinstall": "is-ci || husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
