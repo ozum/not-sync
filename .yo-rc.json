@@ -1,13 +1,5 @@
 {
   "generator-tsmod": {
-    "addedFilesSafe": {
-      ".eslintrc.js": "661c7c22fbe2a894f22ac1e32568d3faa6f760c3",
-      "README.njk": "cc179ac48b4ec2516292f3e42be08cb793c88b47",
-      "jest.config.js": "0bd134f06add10c42a03e4b115aef2a323e4b136",
-      "lint-staged.config.js": "cbb09ecb17251589a793f69fea1a59c20f82a2c5",
-      "prettier.config.js": "2339672f6e5b8d3aeebe63b98613dca158b8b650",
-      "tsconfig.json": "86c1ebbd8975dcf218636f0a737b1bb310c2fd9a"
-    },
     "createdDirs": ["module-files", ".github", ".husky"],
     "addedData": {
       "package.json": {
@@ -20,11 +12,11 @@
           "files": ["dist", "!dist/**/@(*.spec|*.test)*", "!dist/**/__test__", "module-files", "@types"],
           "homepage": "https://github.com/ozum/not-sync",
           "repository": "ozum/not-sync",
-          "scripts.build": "not-sync dist && tsc --incremental",
+          "scripts.build": "(npm run not-sync-bin dist) && (tsc --incremental)",
           "scripts.execute": "ts-node --transpile-only --compiler-options '{ \"module\": \"commonjs\" }'",
           "scripts.format": "prettier . --write",
           "scripts.lint": "eslint --ignore-path .gitignore --cache --max-warnings 0 --ext js,jsx,ts,tsx,vue --fix .",
-          "scripts.postinstall": "is-ci || husky install",
+          "scripts.postinstall": "(npm run not-sync-bin node_modules) && (is-ci || husky install)",
           "scripts.postpublish": "pinst --enable",
           "scripts.prepublishOnly": "pinst --disable",
           "scripts.readme": "node module-files/scripts/tsmod.js readme",
@@ -56,7 +48,6 @@
           "devDependencies.is-ci": "^2.0.0",
           "devDependencies.jest": "^26.6.3",
           "devDependencies.lint-staged": "^10.5.3",
-          "devDependencies.not-sync": "^1.3.2",
           "devDependencies.prettier": "^2.2.1",
           "devDependencies.readmeasy": "^0.2.7",
           "devDependencies.ts-jest": "^26.5.0",
@@ -69,6 +60,13 @@
           "devDependencies.walkdir": "^0.4.1"
         }
       }
+    },
+    "addedFilesSafe": {
+      ".eslintrc.js": "661c7c22fbe2a894f22ac1e32568d3faa6f760c3",
+      "jest.config.js": "0bd134f06add10c42a03e4b115aef2a323e4b136",
+      "lint-staged.config.js": "cbb09ecb17251589a793f69fea1a59c20f82a2c5",
+      "prettier.config.js": "2339672f6e5b8d3aeebe63b98613dca158b8b650",
+      "tsconfig.json": "86c1ebbd8975dcf218636f0a737b1bb310c2fd9a"
     },
     "addedFiles": [
       ".commitlintrc",
