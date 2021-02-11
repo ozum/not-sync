@@ -71,13 +71,13 @@ export async function generateAndTest(
   const beforeDisableFiles = await load(projectPath, { includeDirs: true });
 
   // Disable files in cloud service and record filesystem.
-  await notSync(testOptions.paths, { cwd: projectPath, ...options });
+  await notSync(testOptions.paths, { cwd: projectPath, ci: true, ...options });
   const afterDisableFiles = await load(projectPath, { includeDirs: true });
   const afterDisableTargetFiles = service === "iCloudDrive" && options.linkSameDir ? {} : await load(targetPath, { includeDirs: true });
 
   // Enable files in cloud service and record filesystem.
   if (testOptions.enable) {
-    await resync(testOptions.paths, { cwd: projectPath, ...options });
+    await resync(testOptions.paths, { cwd: projectPath, ci: true, ...options });
     afterEnableFiles = await load(projectPath, { includeDirs: true });
     expect(beforeDisableFiles).toEqual(afterEnableFiles);
   }
