@@ -44,4 +44,6 @@ export interface Options {
   roots?: Partial<Record<ServiceKey, string>>;
   /** Create directories for non existing paths. (If they are in a cloud path). This may be used to disable sync of directories to be created in future. */
   createDirs?: boolean;
+  /** By default "not-sync" does not excute any command on a CI (continous integration) environment. Set this option to true to execute on the CI. */
+  ci?: boolean;
 }

@@ -38,10 +38,14 @@ async function spawn(cmd, args, options) {
   );
 }
 
-// /** Gets parent module's CWD which installed this module. Otherwise returns CWD. */
-// function getCwd(cwd) {
-//   return cwd ?? (process.env.INIT_CWD || process.cwd());
-// }
+/** Remove directory recursively, but don't throw if it does not exist. */
+async function rmdir(path) {
+  try {
+    await fs.rmdir(path, { recursive: true });
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
+}
 
 /**
  * Creates TypeDoc multiple or single markdown from TypeScript source files.
@@ -53,7 +57,10 @@ async function md({ out, singleFile = false }) {
   // rm -rf api-docs-md && typedoc  --plugin typedoc-plugin-example-tag,typedoc-plugin-markdown --excludeExternals --excludePrivate --excludeProtected --exclude 'src/bin/**/*' --theme markdown --readme none --out api-docs-md src/index.ts && find api-docs-md -name \"index.md\" -exec sh -c 'mv \"$1\" \"${1%index.md}\"index2.md' - {} \\;
   // const cwd = getCwd();
   const bin = join(cwd, "node_modules/.bin/typedoc");
-  const tmpDir = await createTempDir();
+
+  const outDir = singleFile ? await createTempDir() : out;
+  if (!singleFile) await rmdir(outDir);
+
   const options = [
     "--plugin",
     "typedoc-plugin-example-tag,typedoc-plugin-markdown",
@@ -67,7 +74,7 @@ async function md({ out, singleFile = false }) {
     "--readme",
     "none",
     "--out",
-    tmpDir,
+    outDir,
     getTypeDocEntry(),
   ];
 
@@ -75,24 +82,21 @@ async function md({ out, singleFile = false }) {
     await spawn(bin, options, { stdio: "inherit" });
 
     // Rename all "index.md" files as "index2.md", because VuePress treats "index.md" special. Renaming does not matter, because title comes from front-matter.
-    const createdFiles = await walk.async(tmpDir);
+    const createdFiles = await walk.async(outDir);
     await Promise.all(createdFiles.map((file) => addFrontMatterToMd(file)));
 
     await Promise.all(
       createdFiles.filter((file) => basename(file) === "index.md").map((file) => fs.rename(file, join(dirname(file), "index2.md")))
     );
   } catch (error) {
-    if (singleFile) await fs.rmdir(tmpDir, { recursive: true });
+    if (singleFile) await rmdir(outDir);
     throw error;
   }
 
   if (singleFile) {
-    const apiDoc = await concatMd(tmpDir, { dirNameAsTitle: true });
+    const apiDoc = await concatMd(outDir, { dirNameAsTitle: true });
     fs.writeFile(out, apiDoc);
-    await fs.rmdir(tmpDir, { recursive: true });
-  } else {
-    await fs.rmdir(out, { recursive: true });
-    await fs.rename(tmpDir, out);
+    await rmdir(outDir);
   }
 }
 
@@ -109,7 +113,9 @@ async function addFrontMatterToMd(file) {
 
     // "# Class: User" results in "User". "# User" results in "User".
     const firstTitleMatch = content.match(new RegExp("^[^#]+?#\\s+(.+?)\\r?\\n", "s"));
-    const firstTitle = firstTitleMatch !== null && firstTitleMatch[1] ? firstTitleMatch[1].replace(/.+?:\s+/, "") : undefined;
+    const firstTitle =
+      firstTitleMatch !== null && firstTitleMatch[1] ? firstTitleMatch[1].replace(/.+?:\s+/, "").replace("@", "\\@") : undefined;
+
     if (firstTitle) await fs.writeFile(file, `---\ntitle: ${firstTitle}\n---\n\n${content}`);
   } catch (error) {
     if (error.code !== "EISDIR") throw error;
@@ -126,7 +132,7 @@ async function html({ out }) {
   // const cwd = getCwd();
   const bin = join(cwd, "node_modules/.bin/typedoc");
 
-  await fs.rmdir(out, { recursive: true });
+  await rmdir(out);
   await spawn(bin, ["--plugin", "typedoc-plugin-example-tag", "--out", out, getTypeDocEntry()], { stdio: "inherit" });
 }
 

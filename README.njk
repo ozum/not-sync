@@ -34,6 +34,7 @@ await notSync(["node_modules", "coverage", "dist"], {
   cwd: "path/to/cwd",
   ignoreConfigs: [".gitignore", ".prettierignore"],
   dry: false;
+  ci: false,
   on: {
     found: (service, files) => { },
     notFound: (files) => { },
@@ -78,6 +79,7 @@ This module disables and enables synchronization of given files and directories 
 
 # Features
 
+- Does not execute commands on a CI (Continous Integration) environment. To enable set `options.ci` to true.
 - Could be used more than one cloud storage services.
 - Provides `resync` method for undoing changes.
 - Auto detect cloud storage service from file path.

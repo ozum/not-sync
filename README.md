@@ -34,6 +34,7 @@ await notSync(["node_modules", "coverage", "dist"], {
   cwd: "path/to/cwd",
   ignoreConfigs: [".gitignore", ".prettierignore"],
   dry: false;
+  ci: false,
   on: {
     found: (service, files) => { },
     notFound: (files) => { },
@@ -78,6 +79,7 @@ This module disables and enables synchronization of given files and directories 
 
 # Features
 
+- Does not execute commands on a CI (Continous Integration) environment. To enable set `options.ci` to true.
 - Could be used more than one cloud storage services.
 - Provides `resync` method for undoing changes.
 - Auto detect cloud storage service from file path.
@@ -138,7 +140,7 @@ not-sync
 
 Ƭ **MoveErrorCode**: _NOSRC_ \| _LINKEXIST_ \| _NOTALINK_ \| _NOTFOUND_ \| _NOTARGET_
 
-Defined in: [index.ts:6](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L6)
+Defined in: [index.ts:6](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L6)
 
 ---
 
@@ -146,7 +148,7 @@ Defined in: [index.ts:6](https://github.com/ozum/not-sync/blob/56cc6e0/src/index
 
 Ƭ **OnAddEntry**: (`service`: [_ServiceKey_](#servicekey), `ignoreFile`: _string_, `entries`: _string_[]) => _any_ \| _Promise_<_any_\>
 
-Defined in: [index.ts:13](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L13)
+Defined in: [index.ts:13](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L13)
 
 ---
 
@@ -154,7 +156,7 @@ Defined in: [index.ts:13](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Ƭ **OnDelete**: (`service`: [_ServiceKey_](#servicekey), `path`: _string_, `type`: _symlink_ \| _parent_) => _any_ \| _Promise_<_any_\>
 
-Defined in: [index.ts:12](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L12)
+Defined in: [index.ts:12](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L12)
 
 ---
 
@@ -162,7 +164,7 @@ Defined in: [index.ts:12](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Ƭ **OnDeleteEntry**: (`service`: [_ServiceKey_](#servicekey), `ignoreFile`: _string_, `entries`: _string_[]) => _any_ \| _Promise_<_any_\>
 
-Defined in: [index.ts:14](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L14)
+Defined in: [index.ts:14](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L14)
 
 ---
 
@@ -170,7 +172,7 @@ Defined in: [index.ts:14](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Ƭ **OnFound**: (`service`: [_ServiceKey_](#servicekey), `files`: _string_[]) => _any_ \| _Promise_<_any_\>
 
-Defined in: [index.ts:7](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L7)
+Defined in: [index.ts:7](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L7)
 
 ---
 
@@ -178,7 +180,7 @@ Defined in: [index.ts:7](https://github.com/ozum/not-sync/blob/56cc6e0/src/index
 
 Ƭ **OnMove**: (`service`: [_ServiceKey_](#servicekey), `from`: _string_, `to`: _string_) => _any_ \| _Promise_<_any_\>
 
-Defined in: [index.ts:9](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L9)
+Defined in: [index.ts:9](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L9)
 
 ---
 
@@ -186,7 +188,7 @@ Defined in: [index.ts:9](https://github.com/ozum/not-sync/blob/56cc6e0/src/index
 
 Ƭ **OnMoveFail**: (`service`: [_ServiceKey_](#servicekey), `errorCode`: [_MoveErrorCode_](#moveerrorcode), `from?`: _string_, `to?`: _string_) => _any_ \| _Promise_<_any_\>
 
-Defined in: [index.ts:10](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L10)
+Defined in: [index.ts:10](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L10)
 
 ---
 
@@ -194,7 +196,7 @@ Defined in: [index.ts:10](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Ƭ **OnNotFound**: (`files`: _string_[]) => _any_ \| _Promise_<_any_\>
 
-Defined in: [index.ts:8](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L8)
+Defined in: [index.ts:8](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L8)
 
 ---
 
@@ -202,7 +204,7 @@ Defined in: [index.ts:8](https://github.com/ozum/not-sync/blob/56cc6e0/src/index
 
 Ƭ **OnSymlink**: (`service`: [_ServiceKey_](#servicekey), `target`: _string_, `path`: _string_) => _any_ \| _Promise_<_any_\>
 
-Defined in: [index.ts:11](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L11)
+Defined in: [index.ts:11](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L11)
 
 ---
 
@@ -210,7 +212,7 @@ Defined in: [index.ts:11](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Ƭ **ServiceKey**: _iCloudDrive_ \| _dropbox_ \| _oneDrive_
 
-Defined in: [cloud-service/cloud-service.ts:21](https://github.com/ozum/not-sync/blob/56cc6e0/src/cloud-service/cloud-service.ts#L21)
+Defined in: [cloud-service/cloud-service.ts:21](https://github.com/ozum/not-sync/blob/ebfdb79/src/cloud-service/cloud-service.ts#L21)
 
 ## Functions
 
@@ -227,7 +229,7 @@ Defined in: [cloud-service/cloud-service.ts:21](https://github.com/ozum/not-sync
 
 **Returns:** _Promise_<_void_\>
 
-Defined in: [main.ts:32](https://github.com/ozum/not-sync/blob/56cc6e0/src/main.ts#L32)
+Defined in: [main.ts:34](https://github.com/ozum/not-sync/blob/ebfdb79/src/main.ts#L34)
 
 ---
 
@@ -244,7 +246,7 @@ Defined in: [main.ts:32](https://github.com/ozum/not-sync/blob/56cc6e0/src/main.
 
 **Returns:** _Promise_<_void_\>
 
-Defined in: [main.ts:28](https://github.com/ozum/not-sync/blob/56cc6e0/src/main.ts#L28)
+Defined in: [main.ts:30](https://github.com/ozum/not-sync/blob/ebfdb79/src/main.ts#L30)
 
 # Interfaces
 
@@ -277,7 +279,7 @@ Defined in: [main.ts:28](https://github.com/ozum/not-sync/blob/56cc6e0/src/main.
 
 • `Optional` **addEntry**: _undefined_ \| [_OnAddEntry_](#onaddentry)
 
-Defined in: [index.ts:23](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L23)
+Defined in: [index.ts:23](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L23)
 
 ---
 
@@ -285,7 +287,7 @@ Defined in: [index.ts:23](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 • `Optional` **delete**: _undefined_ \| [_OnDelete_](#ondelete)
 
-Defined in: [index.ts:22](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L22)
+Defined in: [index.ts:22](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L22)
 
 ---
 
@@ -293,7 +295,7 @@ Defined in: [index.ts:22](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 • `Optional` **deleteEntry**: _undefined_ \| [_OnDeleteEntry_](#ondeleteentry)
 
-Defined in: [index.ts:24](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L24)
+Defined in: [index.ts:24](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L24)
 
 ---
 
@@ -301,7 +303,7 @@ Defined in: [index.ts:24](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 • `Optional` **found**: _undefined_ \| [_OnFound_](#onfound)
 
-Defined in: [index.ts:17](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L17)
+Defined in: [index.ts:17](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L17)
 
 ---
 
@@ -309,7 +311,7 @@ Defined in: [index.ts:17](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 • `Optional` **move**: _undefined_ \| [_OnMove_](#onmove)
 
-Defined in: [index.ts:19](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L19)
+Defined in: [index.ts:19](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L19)
 
 ---
 
@@ -317,7 +319,7 @@ Defined in: [index.ts:19](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 • `Optional` **moveFail**: _undefined_ \| [_OnMoveFail_](#onmovefail)
 
-Defined in: [index.ts:20](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L20)
+Defined in: [index.ts:20](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L20)
 
 ---
 
@@ -325,7 +327,7 @@ Defined in: [index.ts:20](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 • `Optional` **notFound**: _undefined_ \| [_OnNotFound_](#onnotfound)
 
-Defined in: [index.ts:18](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L18)
+Defined in: [index.ts:18](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L18)
 
 ---
 
@@ -333,7 +335,7 @@ Defined in: [index.ts:18](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 • `Optional` **symlink**: _undefined_ \| [_OnSymlink_](#onsymlink)
 
-Defined in: [index.ts:21](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L21)
+Defined in: [index.ts:21](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L21)
 
 <a name="interfacesoptionsmd"></a>
 
@@ -351,6 +353,7 @@ Options
 
 ### Properties
 
+- [ci](#ci)
 - [createDirs](#createdirs)
 - [cwd](#cwd)
 - [dry](#dry)
@@ -363,13 +366,23 @@ Options
 
 ## Properties
 
+### ci
+
+• `Optional` **ci**: _undefined_ \| _boolean_
+
+By default "not-sync" does not excute any command on a CI (continous integration) environment. Set this option to true to execute on the CI.
+
+Defined in: [index.ts:48](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L48)
+
+---
+
 ### createDirs
 
 • `Optional` **createDirs**: _undefined_ \| _boolean_
 
 Create directories for non existing paths. (If they are in a cloud path). This may be used to disable sync of directories to be created in future.
 
-Defined in: [index.ts:46](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L46)
+Defined in: [index.ts:46](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L46)
 
 ---
 
@@ -379,7 +392,7 @@ Defined in: [index.ts:46](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Current working directory to be used for resolving relative paths.
 
-Defined in: [index.ts:30](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L30)
+Defined in: [index.ts:30](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L30)
 
 ---
 
@@ -389,7 +402,7 @@ Defined in: [index.ts:30](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Prevents changes to be written to disk. Executes a dry run.
 
-Defined in: [index.ts:34](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L34)
+Defined in: [index.ts:34](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L34)
 
 ---
 
@@ -399,7 +412,7 @@ Defined in: [index.ts:34](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Ignore configuration files (e.g. .gitignore, .prettierignore) to add new created files if any.
 
-Defined in: [index.ts:32](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L32)
+Defined in: [index.ts:32](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L32)
 
 ---
 
@@ -409,7 +422,7 @@ Defined in: [index.ts:32](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Move files near original one for iCloudDrive. For example "node_modules" is moved "node_modules.nosync" in same directory.
 
-Defined in: [index.ts:40](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L40)
+Defined in: [index.ts:40](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L40)
 
 ---
 
@@ -419,7 +432,7 @@ Defined in: [index.ts:40](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Event handler functions to act on several events generated during operation.
 
-Defined in: [index.ts:36](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L36)
+Defined in: [index.ts:36](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L36)
 
 ---
 
@@ -429,7 +442,7 @@ Defined in: [index.ts:36](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Roots of cloud services. If default roots has to be changed for same reson.
 
-Defined in: [index.ts:44](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L44)
+Defined in: [index.ts:44](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L44)
 
 ---
 
@@ -439,7 +452,7 @@ Defined in: [index.ts:44](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Custom roots for each cloud service to move files.
 
-Defined in: [index.ts:42](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L42)
+Defined in: [index.ts:42](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L42)
 
 ---
 
@@ -449,7 +462,7 @@ Defined in: [index.ts:42](https://github.com/ozum/not-sync/blob/56cc6e0/src/inde
 
 Adds extra information to event handlers.
 
-Defined in: [index.ts:38](https://github.com/ozum/not-sync/blob/56cc6e0/src/index.ts#L38)
+Defined in: [index.ts:38](https://github.com/ozum/not-sync/blob/ebfdb79/src/index.ts#L38)
 
 # Related
 

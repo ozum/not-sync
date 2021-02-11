@@ -1,3 +1,4 @@
+import ci from "ci-info";
 import ICloudDrive from "./cloud-service/icloud-drive";
 import DropBox from "./cloud-service/dropbox";
 import OneDrive from "./cloud-service/onedrive";
@@ -8,6 +9,7 @@ import type { Options } from "./index";
 const ServiceProviders = [ICloudDrive, DropBox, OneDrive];
 
 async function callMethod(method: "notSync" | "resync", paths: string[], userOptions: Options): Promise<void> {
+  if (ci.isCI && !userOptions.ci) return;
   if (!paths) throw new Error("Paths are required.");
   const options = { linkSameDir: true, ...userOptions, cwd: getCWD(userOptions.cwd) };
   let nonCloudPaths = paths;
